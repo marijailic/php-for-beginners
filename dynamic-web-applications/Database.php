@@ -2,6 +2,7 @@
 
     class Database{
         public $connection;
+        public $statement;
         public function __construct($config, $username = 'root', $password = 'root')
         {
             $dsn = 'mysql:' . http_build_query($config, '', ';');
@@ -12,12 +13,34 @@
         }
         public function query($query, $params = [])
         {
-            $statement = $this->connection->prepare($query);
+            // statement koji dobivamo preko PDO od baze
+            $this->statement = $this->connection->prepare($query);
 
             // bindanje parametara u upit
-            $statement->execute($params);
+            $this->statement->execute($params);
 
-            return $statement;
+            // return $statement;
+
+            // vise ne vracam statement nego vracam instancu klase
+            return $this;
+        }
+        public function get()
+        {
+            return $this->statement->fetchAll();
+        }
+        public function find()
+        {
+            return $this->statement->fetch();
+        }
+        public function findOrFail()
+        {
+            $result = $this->find();
+
+            if (!$result){
+                abort();
+            }
+
+            return $result;
         }
     }
 

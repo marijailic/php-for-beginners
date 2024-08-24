@@ -1,13 +1,6 @@
 <?php
 
-    // uzimam path iz REQUEST_URI pomocu parse_url
-    $uri = parse_url($_SERVER["REQUEST_URI"])['path'];
-
-    $routes = [
-        '/' => 'controllers/index.php',
-        '/about' => 'controllers/about.php',
-        '/contact' => 'controllers/contact.php',
-    ];
+    $routes = require('routes.php');
 
     function routeToController($uri, $routes){
         if(array_key_exists($uri, $routes)) {
@@ -24,5 +17,8 @@
         require "views/{$code}.php";
         die();
     }
+
+    // uzimam path iz REQUEST_URI pomocu parse_url
+    $uri = parse_url($_SERVER["REQUEST_URI"])['path'];
 
     routeToController($uri, $routes);
