@@ -1,9 +1,12 @@
 <?php
 
-    $config = require "config.php";
-    $db = new Database($config['database']);
+    //    use Core\Database;
+    //
+    //    $config = require base_path("config.php");
+    //    $db = new Database($config['database']);
 
-    $heading = "Note";
+    use Core\App;
+    $db = App::resolve('Core\Database');
 
     // hendlanje magic numbera
     // magic number ima svoju signifikantnost i vazno ju je naznaciti
@@ -18,12 +21,15 @@
     //     abort();
     // }
 
-    authorize($note['user_id'] == $currentUserId);
-
     // poopceno u authorize helper fn
     // if ($note['user_id'] != $currentUserId){
     //     // import status codea ('magic numbera') iz Response klase
     //     abort(Response::FORBIDDEN);
     // }
 
-    require "views/note.view.php";
+    authorize($note['user_id'] == $currentUserId);
+
+    view("notes/show.view.php", [
+        'heading' => 'Note',
+        'note' => $note
+    ]);

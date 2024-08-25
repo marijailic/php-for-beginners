@@ -1,12 +1,12 @@
-<?php require("partials/head.php"); ?>
-<?php require("partials/nav.php"); ?>
+<?php require base_path("views/partials/head.php"); ?>
+<?php require base_path("views/partials/nav.php"); ?>
 
     <div class="min-h-full">
-        <?php require("partials/banner.php"); ?>
+        <?php require base_path("views/partials/banner.php"); ?>
         <main>
             <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 
-                <form method="POST">
+                <form method="POST" action="/notes">
 
                     <div class="col-span-full">
                         <label for="body" class="block text-sm font-medium leading-6 text-gray-900">Body</label>
@@ -29,4 +29,4 @@
         </main>
     </div>
 
-<?php require("partials/footer.php"); ?>
+<?php require base_path("views/partials/footer.php"); ?>
