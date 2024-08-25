@@ -44,3 +44,26 @@
         extract($attributes);
         require base_path('views/' . $path);
     }
+
+    function login($user)
+    {
+
+        $_SESSION['user'] = [
+            'email' => $user['email'],
+        ];
+
+        session_regenerate_id(true);
+    }
+
+    function logout()
+    {
+        // ocistim superglobal
+        $_SESSION = [];
+
+        // unistim session file
+        session_destroy();
+
+        // brisem cookie
+        $params = session_get_cookie_params();
+        setcookie('PHPSESSID', '', time() - 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+    }
