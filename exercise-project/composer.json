@@ -1,0 +1,26 @@
+{
+    "name": "marija/php-for-beginners",
+    "authors": [
+        {
+            "name": "Marija Ilić",
+            "email": "marija.cbsqg@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/collections": "^11.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "Core/",
+            "Http\\": "Http/"
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

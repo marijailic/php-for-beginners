@@ -7,20 +7,23 @@
 
     const BASE_PATH = __DIR__ . '/../';
 
+    require BASE_PATH . 'vendor/autoload.php';
+
     require BASE_PATH . "Core/functions.php";
 
     // require base_path("Database.php");
     // require base_path("Core/Response.php");
 
-    // spl_autoload_register fn se automatski pokrece na instanciranju klase
-    // na ovaj nacin se klase ne moraju eksplicitno (manualno) dodavati
-    spl_autoload_register(function ($class){
-
-        // Core\Database -> Core/Database
-        $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
-
-        require base_path($class . ".php");
-    });
+// rjesava composer autoload
+//    // spl_autoload_register fn se automatski pokrece na instanciranju klase
+//    // na ovaj nacin se klase ne moraju eksplicitno (manualno) dodavati
+//    spl_autoload_register(function ($class){
+//
+//        // Core\Database -> Core/Database
+//        $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
+//
+//        require base_path($class . ".php");
+//    });
 
     require base_path("bootstrap.php");
 
