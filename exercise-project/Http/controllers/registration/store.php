@@ -33,7 +33,10 @@ if(!$user){
         'password' => password_hash($password, PASSWORD_BCRYPT)
     ]);
 
+    $user = $usersRepository->getByEmail($email);
+
     (new Authenticator)->login([
+        'id' => $user['id'],
         'email' => $email,
     ]);
 

@@ -1,29 +1,21 @@
 <?php
 
-use Core\Validator;
 use Http\Repositories\NotesRepository;
-use Core\Session;
+use Http\Requests\notes\StoreNotesRequest;
 
-// TODO - errors?
-$errors = [];
+$response = (new StoreNotesRequest())->process();
 
-if(!Validator::string($_POST['body'],1,1000)){
-    $errors['body']='A body of no more than 1000 characters is required.';
-}
-
-if(!empty($errors)){
+if(!empty($response['errors'])){
     view("notes/create.view.php",[
         'heading'=>'Create Note',
-        'errors'=>$errors
+        'errors'=>$response['errors']
     ]);
 }
 
-if(empty($errors)){
-    (new NotesRepository())->create([
-        'body' => $_POST['body'],
-        'user_id' => Session::getCurrentUserId()
-    ]);
+(new NotesRepository())->create([
+    'body' => $response['data']['body'],
+    'user_id' => $response['data']['userId'],
+]);
 
-    header('Location: /notes');
-    die();
-}
+header('Location: /notes');
+die();

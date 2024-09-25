@@ -1,15 +1,13 @@
 <?php
 
 use Http\Repositories\NotesRepository;
-use Core\Middleware\Auth;
+use Http\Requests\notes\DestroyNotesRequest;
 
-$notesRepository = new NotesRepository();
+$response = (new DestroyNotesRequest($_GET['id']))->process();
 
-$note = $notesRepository->getById($_GET['id']);
+// TODO - validacija
 
-Auth::authorize($note['user_id']);
-
-$notesRepository->deleteById($note['id']);
+(new NotesRepository())->deleteById($response['data']['id']);
 
 header('Location: /notes');
-exit();
+die();

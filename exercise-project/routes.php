@@ -1,6 +1,6 @@
 <?php
 
-// TODO - prava?
+// TODO - grupirati rute
 $router->get('/', 'index.php');
 $router->get('/about', 'about.php');
 $router->get('/contact', 'contact.php');

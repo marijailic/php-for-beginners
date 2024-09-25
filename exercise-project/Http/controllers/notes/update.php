@@ -1,28 +1,19 @@
 <?php
 
 use Http\Repositories\NotesRepository;
-use Core\Middleware\Auth;
-use Core\Validator;
+use Http\Requests\notes\UpdateNotesRequest;
 
-$notesRepository = new NotesRepository();
-$note = $notesRepository->getById($_POST['id']);
-Auth::authorize($note['user_id']);
+$response = (new UpdateNotesRequest($_POST['id']))->process();
 
-// TODO - errors?
-$errors = [];
-if(!Validator::string($_POST['body'],1,1000)){
-    $errors['body']='A body of no more than 1000 characters is required.';
-}
-
-if (count($errors)){
+if (!empty($response['errors'])) {
      view('notes/edit.view.php',[
         'heading' => 'Edit Note',
-        'errors' => $errors,
-        'note' => $note
+        'errors' => $response['errors'],
+        'note' => $response['data']
     ]);
 }
 
-$notesRepository->updateById($_POST['id'], $_POST['body']);
+(new NotesRepository())->updateById($response['data']['id'], $response['data']['body']);
 
-header('location: /notes');
+header('Location: /notes');
 die();
