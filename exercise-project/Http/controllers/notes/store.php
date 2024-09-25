@@ -1,33 +1,29 @@
 <?php
 
-    //    use Core\Database;
-    use Core\Validator;
+use Core\Validator;
+use Http\Repositories\NotesRepository;
+use Core\Session;
 
-    //    $config = require base_path("config.php");
-    //    $db = new Database($config['database']);
+// TODO - errors?
+$errors = [];
 
-    use Core\App;
-    $db = App::resolve('Core\Database');
+if(!Validator::string($_POST['body'],1,1000)){
+    $errors['body']='A body of no more than 1000 characters is required.';
+}
 
-    $errors = [];
+if(!empty($errors)){
+    view("notes/create.view.php",[
+        'heading'=>'Create Note',
+        'errors'=>$errors
+    ]);
+}
 
-    if(!Validator::string($_POST['body'],1,1000)){
-        $errors['body']='A body of no more than 1000 characters is required.';
-    }
+if(empty($errors)){
+    (new NotesRepository())->create([
+        'body' => $_POST['body'],
+        'user_id' => Session::getCurrentUserId()
+    ]);
 
-    if(!empty($errors)){
-        view("notes/create.view.php",[
-            'heading'=>'Create Note',
-            'errors'=>$errors
-        ]);
-    }
-
-    if(empty($errors)){
-        $db->query('INSERT INTO notes (body, user_id) VALUES(:body, :user_id)', [
-            ':body' => $_POST['body'],
-            'user_id' => 16
-        ]);
-
-        header('Location: /notes');
-        die();
-    }
+    header('Location: /notes');
+    die();
+}

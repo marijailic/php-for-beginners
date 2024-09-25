@@ -13,7 +13,8 @@ class Authenticator
         if($user){
             if(password_verify($password, $user['password'])){
                 $this->login([
-                    'email' => $email,
+                    'id' => $user['id'],
+                    'email' => $user['email'],
                 ]);
 
                 return true;
@@ -22,10 +23,12 @@ class Authenticator
         return false;
     }
 
+    // TODO - session?
     public function login($user)
     {
 
         $_SESSION['user'] = [
+            'id' => $user['id'],
             'email' => $user['email'],
         ];
 

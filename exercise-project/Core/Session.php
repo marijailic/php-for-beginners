@@ -12,6 +12,10 @@ class Session
     {
         $_SESSION[$key] = $value;
     }
+    public static function getCurrentUserId()
+    {
+        return $_SESSION['user']['id'] ?? null;
+    }
     public static function get($key, $default = null)
     {
         //        if (isset($_SESSION['_flash']['key'])){

@@ -1,18 +1,13 @@
 <?php
 
-    use Core\App;
-    $db = App::resolve('Core\Database');
+use Http\Repositories\NotesRepository;
+use Core\Middleware\Auth;
 
-    $currentUserId = 4;
+$note = (new NotesRepository())->getById($_GET['id']);
+Auth::authorize($note['user_id']);
 
-    $note = $db->query('select * from notes where id= :id', [
-        'id' => $_GET['id']
-    ])->findOrFail();
-
-    authorize($note['user_id'] == $currentUserId);
-
-    view("notes/edit.view.php", [
-        'heading' => 'Edit Note',
-        'errors' => [],
-        'note' => $note
-    ]);
+view("notes/edit.view.php", [
+    'heading' => 'Edit Note',
+    'errors' => [],
+    'note' => $note
+]);

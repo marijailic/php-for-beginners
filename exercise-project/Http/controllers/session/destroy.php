@@ -1,8 +1,8 @@
 <?php
 
-    use Core\Authenticator;
+use Core\Authenticator;
 
-    (new Authenticator)->logout();
+(new Authenticator)->logout();
 
-    header('location: /');
-    exit();
+header('location: /');
+exit();
