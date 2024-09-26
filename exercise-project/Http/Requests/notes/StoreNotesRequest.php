@@ -2,16 +2,17 @@
 
 namespace Http\Requests\notes;
 
+use Core\Response;
 use Core\Session;
 use Core\Validator;
 use Http\Requests\BasicRequest;
 
 class StoreNotesRequest extends BasicRequest
 {
-    protected $body;
-    protected $userId;
+    protected string $body;
+    protected int $userId;
 
-    protected $errors = [];
+    protected array $errors = [];
 
     public function __construct()
     {
@@ -35,9 +36,35 @@ class StoreNotesRequest extends BasicRequest
 
     protected function validate()
     {
-        // TODO - validacija
-        if(!Validator::string($_POST['body'],1,1000)){
-            $this->errors['body'] = 'A body of no more than 1000 characters is required.';
+        if(is_null($this->body)) {
+            $this->errors['body'] = [
+                'message' => "Note body is required.",
+                'status'  => Response::BAD_REQUEST
+            ];
+            return;
+        }
+
+        if(!Validator::string($_POST['body'],1,1000)) {
+            $this->errors['body'] = [
+                'message' => "A body of no more than 1000 characters is required.",
+                'status'  => Response::BAD_REQUEST
+            ];
+            return;
+        }
+
+        if(is_null($this->userId)) {
+            $this->errors['userId'] = [
+                'message' => "User id is required.",
+                'status'  => Response::BAD_REQUEST
+            ];
+            return;
+        }
+
+        if(!Validator::number($this->userId)) {
+            $this->errors['userId'] = [
+                'message' => "User id must be a number.",
+                'status'  => Response::BAD_REQUEST
+            ];
         }
     }
 }

@@ -2,22 +2,23 @@
 
 namespace Http\Requests\notes;
 
+use Core\Response;
 use Core\Validator;
 use Http\Repositories\NotesRepository;
 use Http\Requests\BasicRequest;
 
 class UpdateNotesRequest extends BasicRequest
 {
-    protected $note;
-    protected $id;
-    protected $body;
+    protected array $note;
+    protected int $id;
+    protected string $body;
 
-    protected $errors = [];
+    protected array $errors = [];
 
     public function __construct($noteId){
         parent::__construct();
         $this->note = (new NotesRepository())->getById($noteId);
-        $this->id = $_POST['id'];
+        $this->id = (int) $_POST['id'];
         $this->body = $_POST['body'];
     }
 
@@ -37,9 +38,35 @@ class UpdateNotesRequest extends BasicRequest
 
     protected function validate()
     {
-        // TODO - validacija
-        if (!Validator::string($this->body, 1, 1000)) {
-            $this->errors['body'] = 'A body of no more than 1000 characters is required.';
+        if(is_null($this->id)) {
+            $this->errors['id'] = [
+                'message' => "Note id is required.",
+                'status'  => Response::BAD_REQUEST
+            ];
+            return;
+        }
+
+        if(!Validator::number($this->id)) {
+            $this->errors['id'] = [
+                'message' => "Note id must be a number.",
+                'status'  => Response::BAD_REQUEST
+            ];
+            return;
+        }
+
+        if(is_null($this->body)) {
+            $this->errors['body'] = [
+                'message' => "Note body is required.",
+                'status'  => Response::BAD_REQUEST
+            ];
+            return;
+        }
+
+        if(!Validator::string($_POST['body'],1,1000)) {
+            $this->errors['body'] = [
+                'message' => "A body of no more than 1000 characters is required.",
+                'status'  => Response::BAD_REQUEST
+            ];
         }
     }
 }

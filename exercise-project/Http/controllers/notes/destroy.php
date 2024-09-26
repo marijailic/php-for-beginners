@@ -5,7 +5,11 @@ use Http\Requests\notes\DestroyNotesRequest;
 
 $response = (new DestroyNotesRequest($_GET['id']))->process();
 
-// TODO - validacija
+if (!empty($response['errors'])) {
+    $status = $response['errors']['id']['status'];
+    view("{$status}.php");
+    return;
+}
 
 (new NotesRepository())->deleteById($response['data']['id']);
 

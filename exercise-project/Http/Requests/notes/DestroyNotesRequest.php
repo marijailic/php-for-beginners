@@ -2,21 +2,23 @@
 
 namespace Http\Requests\notes;
 
+use Core\Validator;
+use Core\Response;
 use Http\Repositories\NotesRepository;
 use Http\Requests\BasicRequest;
 
 class DestroyNotesRequest extends BasicRequest
 {
-    protected $note;
-    protected $id;
+    protected array $note;
+    protected int $id;
 
-    protected $errors = [];
+    protected array $errors = [];
 
     public function __construct($noteId)
     {
         parent::__construct();
         $this->note = (new NotesRepository())->getById($noteId);
-        $this->id = $_GET['id'];
+        $this->id = (int) $_GET['id'];
     }
 
     public function process()
@@ -34,6 +36,19 @@ class DestroyNotesRequest extends BasicRequest
 
     protected function validate()
     {
-        // TODO - validacija
+        if(is_null($this->id)) {
+            $this->errors['id'] = [
+                'message' => "Note id is required.",
+                'status'  => Response::BAD_REQUEST
+            ];
+            return;
+        }
+
+        if(!Validator::number($this->id)) {
+            $this->errors['id'] = [
+                'message' => "Note id must be a number.",
+                'status'  => Response::BAD_REQUEST
+            ];
+        }
     }
 }

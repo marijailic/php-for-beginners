@@ -18,8 +18,8 @@
                         </div>
                     </div>
 
-                    <?php if(isset($errors['body'])) : ?>
-                        <p class="text-red-500 text-xs mt-2"><?= $errors['body'] ?></p>
+                    <?php if(isset($errors['message'])) : ?>
+                        <p class="text-red-500 text-xs mt-2"><?= $errors['message'] ?></p>
                     <?php endif; ?>
 
                     <div class="mt-6 flex items-center justify-end gap-x-4">
