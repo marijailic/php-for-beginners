@@ -1,9 +1,9 @@
 <?php
 
-use Http\Repositories\NotesRepository;
 use Http\Requests\notes\DestroyNotesRequest;
+use Http\Repositories\NotesRepository;
 
-$response = (new DestroyNotesRequest($_GET['id']))->process();
+$response = (new DestroyNotesRequest())->process();
 
 if (!empty($response['errors'])) {
     $status = $response['errors']['id']['status'];

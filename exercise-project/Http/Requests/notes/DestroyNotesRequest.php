@@ -2,53 +2,51 @@
 
 namespace Http\Requests\notes;
 
-use Core\Validator;
-use Core\Response;
+use Http\Requests\BasicAuthorizedRequest;
 use Http\Repositories\NotesRepository;
-use Http\Requests\BasicRequest;
 
-class DestroyNotesRequest extends BasicRequest
+class DestroyNotesRequest extends BasicAuthorizedRequest
 {
-    protected array $note;
-    protected int $id;
+//    TODO
+//    protected int $id;
+    protected $id;
 
-    protected array $errors = [];
-
-    public function __construct($noteId)
+    public function __construct()
     {
         parent::__construct();
-        $this->note = (new NotesRepository())->getById($noteId);
-        $this->id = (int) $_GET['id'];
     }
 
     public function process()
     {
-        $this->authorize($this->note['user_id']);
-        $this->validate();
+//        TODO
+//        $this->id = (int) $_GET['id'];
+        $this->id = $_GET['id'];
+
+        if (!$this->validate()) {
+            return [
+                'data' => [],
+                'errors' => $this->errors
+            ];
+        }
+
+        $noteUserId = (new NotesRepository())->getById($this->id)['user_id'];
+        $this->authorize($noteUserId);
 
         return [
             'data' => [
                 'id' => $this->id
             ],
-            'errors' => $this->errors
+            'errors' => []
         ];
     }
 
     protected function validate()
     {
-        if(is_null($this->id)) {
-            $this->errors['id'] = [
-                'message' => "Note id is required.",
-                'status'  => Response::BAD_REQUEST
-            ];
-            return;
-        }
+        $this->validateData(
+            ['id' => $this->id],
+            ['id' => 'number']
+        );
 
-        if(!Validator::number($this->id)) {
-            $this->errors['id'] = [
-                'message' => "Note id must be a number.",
-                'status'  => Response::BAD_REQUEST
-            ];
-        }
+        return !$this->failed();
     }
 }

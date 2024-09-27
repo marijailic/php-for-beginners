@@ -2,25 +2,39 @@
 
 namespace Http\Requests;
 
-use Core\Session;
 use Core\Response;
+use Core\Validator;
 
 class BasicRequest
 {
-    protected $currentUserId;
+    protected array $errors = [];
 
-    public function __construct()
+    public function validateData(array $data, array $rules)
     {
-        $this->currentUserId = Session::getCurrentUserId();
+        foreach ($rules as $field => $rule) {
+            if (!isset($data[$field])) {
+                $this->errors[$field] = [
+                    'message' => ucfirst($field) . ' is required.',
+                    'status' => Response::BAD_REQUEST
+                ];
+            } elseif ($rule === 'number' && !Validator::number($data[$field])) {
+                $this->errors[$field] = [
+                    'message' => ucfirst($field) . ' must be a number.',
+                    'status' => Response::BAD_REQUEST
+                ];
+            } elseif (is_array($rule) && $rule[0] === 'string') {
+                if(!Validator::string($data[$field], $min = $rule[1] ?? 1, $max = $rule[2] ?? INF)) {
+                    $this->errors[$field] = [
+                        'message' => ucfirst($field) . " must be between $min and $max characters.",
+                        'status' => Response::BAD_REQUEST
+                    ];
+                }
+            }
+        }
     }
 
-    public function authorize($userId)
+    public function failed()
     {
-        if ($userId != $this->currentUserId) {
-            $status = Response::FORBIDDEN;
-            http_response_code($status);
-            require base_path("views/{$status}.php");
-            die();
-        }
+        return !empty($this->errors);
     }
 }

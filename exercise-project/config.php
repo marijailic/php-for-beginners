@@ -9,6 +9,6 @@ return [
     ],
     'credentials' => [
         'username' => 'root',
-        'password' => 'rootroot',
+        'password' => '',
     ]
 ];
