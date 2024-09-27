@@ -9,9 +9,6 @@
                     <?php foreach ($notes as $note): ?>
                         <li>
                             <a href="/note?id=<?= $note['id'] ?>" class="text-blue-500 hover:underline">
-                                <!-- htmlspecialchars je php funkcija -->
-                                <!-- konvertira sve primjenjive znakove u HTML entities -->
-                                <!-- zamjenjuje ih svojim ekvivalentima kako ih ne bi renderirao kao HTML -->
                                 <?= htmlspecialchars($note['body']) ?>
                             </a>
                         </li>

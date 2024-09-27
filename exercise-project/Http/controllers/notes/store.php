@@ -1,9 +1,9 @@
 <?php
 
+use Http\Requests\notes\StoreNoteRequest;
 use Http\Repositories\NotesRepository;
-use Http\Requests\notes\StoreNotesRequest;
 
-$response = (new StoreNotesRequest())->process();
+$response = (new StoreNoteRequest())->process();
 
 if(!empty($response['errors'])){
     if(isset($response['errors']['body'])) {

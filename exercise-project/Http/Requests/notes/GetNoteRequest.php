@@ -5,13 +5,11 @@ namespace Http\Requests\notes;
 use Http\Requests\BasicAuthorizedRequest;
 use Http\Repositories\NotesRepository;
 
-class UpdateNotesRequest extends BasicAuthorizedRequest
+class GetNoteRequest extends BasicAuthorizedRequest
 {
 //    TODO
 //    protected int $id;
-//    protected string $body;
     protected $id;
-    protected $body;
 
     public function __construct()
     {
@@ -21,28 +19,22 @@ class UpdateNotesRequest extends BasicAuthorizedRequest
     public function process()
     {
 //        TODO
-//        $this->id = (int) $_POST['id'];
-        $this->id = $_POST['id'];
-        $this->body = $_POST['body'];
+//        $this->id = (int) $_GET['id'];
+        $this->id = $_GET['id'];
 
         if (!$this->validate()) {
             return [
-                'data' => [
-                    'id' => $this->id,
-                    'body' => $this->body,
-                ],
+                'data' => [],
                 'errors' => $this->errors
             ];
         }
-
 
         $noteUserId = (new NotesRepository())->getById($this->id)['user_id'];
         $this->authorize($noteUserId);
 
         return [
             'data' => [
-                'id' => $this->id,
-                'body' => $this->body,
+                'id' => $this->id
             ],
             'errors' => []
         ];
@@ -51,8 +43,8 @@ class UpdateNotesRequest extends BasicAuthorizedRequest
     protected function validate()
     {
         $this->validateData(
-            ['id' => $this->id, 'body' => $this->body],
-            ['id' => 'number', 'body' => ['string', 1, 1000]]
+            ['id' => $this->id],
+            ['id' => 'number']
         );
 
         return !$this->failed();

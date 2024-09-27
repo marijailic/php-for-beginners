@@ -1,6 +1,7 @@
 <?php
 
 namespace Core;
+
 use Core\Middleware\Middleware;
 
 class Router
@@ -29,18 +30,22 @@ class Router
     {
         return $this->add('GET', $uri, $controller);
     }
+
     public function post($uri, $controller)
     {
         return $this->add('POST', $uri, $controller);
     }
+
     public function delete($uri, $controller)
     {
         return $this->add('DELETE', $uri, $controller);
     }
+
     public function patch($uri, $controller)
     {
         return $this->add('PATCH', $uri, $controller);
     }
+
     public function put($uri, $controller)
     {
         return $this->add('PUT', $uri, $controller);
@@ -58,7 +63,6 @@ class Router
 
         call_user_func($callback, $this);
     }
-
 
     public function route($uri, $method)
     {

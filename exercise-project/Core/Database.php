@@ -1,7 +1,9 @@
 <?php
 
 namespace Core;
+
 use PDO;
+
 class Database{
     public $connection;
     public $statement;
@@ -18,10 +20,8 @@ class Database{
         // statement koji dobivamo preko PDO od baze
         $this->statement = $this->connection->prepare($query);
 
-        // bindanje parametara u upit
         $this->statement->execute($params);
 
-        // vise ne vracam statement nego vracam instancu klase
         return $this;
     }
     public function get()

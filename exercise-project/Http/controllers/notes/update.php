@@ -1,9 +1,9 @@
 <?php
 
+use Http\Requests\notes\UpdateNoteRequest;
 use Http\Repositories\NotesRepository;
-use Http\Requests\notes\UpdateNotesRequest;
 
-$response = (new UpdateNotesRequest($_POST['id']))->process();
+$response = (new UpdateNoteRequest())->process();
 
 if (!empty($response['errors'])) {
     if(isset($response['errors']['id'])) {

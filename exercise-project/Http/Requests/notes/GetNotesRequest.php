@@ -2,26 +2,22 @@
 
 namespace Http\Requests\notes;
 
-use Core\Session;
 use Http\Requests\BasicRequest;
+use Core\Session;
 
-class StoreNotesRequest extends BasicRequest
+class GetNotesRequest extends BasicRequest
 {
 //    TODO
-//    protected string $body;
 //    protected int $userId;
-    protected $body;
     protected $userId;
 
     public function process()
     {
-        $this->body = $_POST['body'];
         $this->userId = Session::getCurrentUserId();
 
         if (!$this->validate()) {
             return [
                 'data' => [
-                    'body' => $this->body,
                     'userId' => $this->userId,
                 ],
                 'errors' => $this->errors
@@ -30,7 +26,6 @@ class StoreNotesRequest extends BasicRequest
 
         return [
             'data' => [
-                'body' => $this->body,
                 'userId' => $this->userId,
             ],
             'errors' => []
@@ -40,8 +35,8 @@ class StoreNotesRequest extends BasicRequest
     protected function validate()
     {
         $this->validateData(
-            ['body' => $this->body, 'userId' => $this->userId],
-            ['body' => ['string', 1, 1000], 'userId' => 'number']
+            ['userId' => $this->userId],
+            ['userId' => 'number']
         );
 
         return !$this->failed();

@@ -5,7 +5,7 @@ namespace Http\Requests\notes;
 use Http\Requests\BasicAuthorizedRequest;
 use Http\Repositories\NotesRepository;
 
-class DestroyNotesRequest extends BasicAuthorizedRequest
+class DestroyNoteRequest extends BasicAuthorizedRequest
 {
 //    TODO
 //    protected int $id;
