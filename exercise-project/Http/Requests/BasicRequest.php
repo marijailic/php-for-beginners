@@ -23,12 +23,17 @@ class BasicRequest
                     'status' => Response::BAD_REQUEST
                 ];
             } elseif (is_array($rule) && $rule[0] === 'string') {
-                if(!Validator::string($data[$field], $min = $rule[1] ?? 1, $max = $rule[2] ?? INF)) {
+                if (!Validator::string($data[$field], $min = $rule[1] ?? 1, $max = $rule[2] ?? INF)) {
                     $this->errors[$field] = [
                         'message' => ucfirst($field) . " must be between $min and $max characters.",
                         'status' => Response::BAD_REQUEST
                     ];
                 }
+            } elseif ($rule === 'email' && !Validator::email($data[$field])) {
+                $this->errors[$field] = [
+                    'message' => ucfirst($field) . ' must be a valid email address.',
+                    'status' => Response::BAD_REQUEST
+                ];
             }
         }
     }
