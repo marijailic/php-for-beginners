@@ -2,13 +2,14 @@
 
 namespace Core;
 
+use Http\Repositories\UsersRepository;
+
 class Authenticator
 {
     public function attempt($email, $password)
     {
-        $user = App::resolve(Database::class)->query('select * from users where email = :email', [
-            'email' => $email
-        ])->find();
+
+        $user = (new UsersRepository())->getByEmail($email);
 
 
         if($user){
@@ -24,14 +25,13 @@ class Authenticator
         return false;
     }
 
-    // TODO - session?
     public function login($user)
     {
 
-        $_SESSION['user'] = [
+        Session::put('user',[
             'id' => $user['id'],
             'email' => $user['email'],
-        ];
+        ]);
 
         session_regenerate_id(true);
     }

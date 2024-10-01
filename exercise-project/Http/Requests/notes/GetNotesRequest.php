@@ -7,22 +7,18 @@ use Core\Session;
 
 class GetNotesRequest extends BasicRequest
 {
-//    TODO
-//    protected int $userId;
-    protected $userId;
+    protected int $userId;
 
     public function process()
     {
-        $this->userId = Session::getCurrentUserId();
-
         if (!$this->validate()) {
             return [
-                'data' => [
-                    'userId' => $this->userId,
-                ],
+                'data' => [],
                 'errors' => $this->errors
             ];
         }
+
+        $this->userId = Session::getCurrentUserId();
 
         return [
             'data' => [
@@ -35,8 +31,8 @@ class GetNotesRequest extends BasicRequest
     protected function validate()
     {
         $this->validateData(
-            ['userId' => $this->userId],
-            ['userId' => 'number']
+            ['userId' => Session::getCurrentUserId()],
+            ['userId' => ['required', 'number']]
         );
 
         return !$this->failed();

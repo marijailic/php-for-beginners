@@ -67,9 +67,14 @@ class Router
     public function route($uri, $method)
     {
         foreach ($this->routes as $route) {
-            if ($route['uri'] === $uri && $route['method'] == strtoupper($method)) {
+
+            $pattern = '#^' . preg_replace('/\{id\}/', '(\d+)', $route['uri']) . '$#';
+
+            if (preg_match($pattern, $uri, $matches) && $route['method'] == strtoupper($method)) {
 
                 Middleware::resolve($route['middleware']);
+
+                $_GET['id'] = $matches[1] ?? null;
 
                 return require base_path('Http/controllers/' . $route['controller']);
             }

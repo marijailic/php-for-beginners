@@ -6,7 +6,7 @@
         <main>
             <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 
-                <form method="POST" action="/note">
+                <form method="POST" action="/note/<?= $note['id'] ?>" id="editNote">
 
                     <input type="hidden" name="_method" value="PATCH">
                     <input type="hidden" name="id" value="<?= $note['id'] ?>">
@@ -32,5 +32,16 @@
             </div>
         </main>
     </div>
+
+    <script>
+        $(document).ready(() => {
+            $('#body').on('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    $('#editNote').submit();
+                }
+            });
+        });
+    </script>
 
 <?php require base_path("views/partials/footer.php"); ?>

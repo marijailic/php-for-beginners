@@ -14,11 +14,11 @@ $router->group(['middleware' => 'guest'], function($router) {
 
 $router->group(['middleware' => 'auth'], function($router) {
     $router->get('/notes', 'notes/index.php');
-    $router->get('/note', 'notes/show.php');
-    $router->delete('/note/destroy', 'notes/destroy.php');
+    $router->get('/note/{id}', 'notes/show.php');
+    $router->delete('/note/{id}/destroy', 'notes/destroy.php');
 
-    $router->get('/note/edit', 'notes/edit.php');
-    $router->patch('/note', 'notes/update.php');
+    $router->get('/note/{id}/edit', 'notes/edit.php');
+    $router->patch('/note/{id}', 'notes/update.php');
 
     $router->get('/notes/create', 'notes/create.php');
     $router->post('/notes', 'notes/store.php');

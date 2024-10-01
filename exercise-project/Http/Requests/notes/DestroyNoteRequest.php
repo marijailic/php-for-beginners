@@ -7,9 +7,7 @@ use Http\Repositories\NotesRepository;
 
 class DestroyNoteRequest extends BasicAuthorizedRequest
 {
-//    TODO
-//    protected int $id;
-    protected $id;
+    protected int $id;
 
     public function __construct()
     {
@@ -18,16 +16,14 @@ class DestroyNoteRequest extends BasicAuthorizedRequest
 
     public function process()
     {
-//        TODO
-//        $this->id = (int) $_GET['id'];
-        $this->id = $_GET['id'];
-
         if (!$this->validate()) {
             return [
                 'data' => [],
                 'errors' => $this->errors
             ];
         }
+
+        $this->id = (int) $_GET['id'];
 
         $noteUserId = (new NotesRepository())->getById($this->id)['user_id'];
         $this->authorize($noteUserId);
@@ -43,8 +39,8 @@ class DestroyNoteRequest extends BasicAuthorizedRequest
     protected function validate()
     {
         $this->validateData(
-            ['id' => $this->id],
-            ['id' => 'number']
+            ['id' => $_GET['id']],
+            ['id' => ['required', 'number']]
         );
 
         return !$this->failed();

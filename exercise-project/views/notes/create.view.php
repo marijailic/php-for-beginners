@@ -6,7 +6,7 @@
         <main>
             <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 
-                <form method="POST" action="/notes">
+                <form method="POST" action="/notes" id="createNote">
 
                     <div class="col-span-full">
                         <label for="body" class="block text-sm font-medium leading-6 text-gray-900">Body</label>
@@ -28,5 +28,16 @@
             </div>
         </main>
     </div>
+
+    <script>
+        $(document).ready(() => {
+            $('#body').on('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    $('#createNote').submit();
+                }
+            });
+        });
+    </script>
 
 <?php require base_path("views/partials/footer.php"); ?>

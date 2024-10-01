@@ -11,25 +11,29 @@ class BasicRequest
 
     public function validateData(array $data, array $rules)
     {
-        foreach ($rules as $field => $rule) {
-            if (!isset($data[$field])) {
+        foreach ($rules as $field => $fieldRules) {
+            if (in_array('required', $fieldRules) && !isset($data[$field])) {
                 $this->errors[$field] = [
                     'message' => ucfirst($field) . ' is required.',
                     'status' => Response::BAD_REQUEST
                 ];
-            } elseif ($rule === 'number' && !Validator::number($data[$field])) {
+            } elseif (in_array('number', $fieldRules) && !Validator::number($data[$field])) {
                 $this->errors[$field] = [
                     'message' => ucfirst($field) . ' must be a number.',
                     'status' => Response::BAD_REQUEST
                 ];
-            } elseif (is_array($rule) && $rule[0] === 'string') {
-                if (!Validator::string($data[$field], $min = $rule[1] ?? 1, $max = $rule[2] ?? INF)) {
+            } elseif (array_key_exists('string', $fieldRules)
+                && !Validator::string(
+                    $data[$field],
+                    $min = $fieldRules['string'][0] ?? 1,
+                    $max = $fieldRules['string'][1] ?? INF
+                )
+            ) {
                     $this->errors[$field] = [
                         'message' => ucfirst($field) . " must be between $min and $max characters.",
                         'status' => Response::BAD_REQUEST
                     ];
-                }
-            } elseif ($rule === 'email' && !Validator::email($data[$field])) {
+            } elseif (in_array('email', $fieldRules) && !Validator::email($data[$field])) {
                 $this->errors[$field] = [
                     'message' => ucfirst($field) . ' must be a valid email address.',
                     'status' => Response::BAD_REQUEST
