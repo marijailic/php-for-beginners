@@ -4,17 +4,17 @@ use Http\Requests\users\StoreUserRequest;
 use Http\Repositories\UsersRepository;
 use Core\Authenticator;
 
-$response = (new StoreUserRequest())->process();
+$processedRequest = new StoreUserRequest();
 
-if(!empty($response['errors'])){
+if(!empty($processedRequest->processedPayload['errors'])){
     view('registration/create.view.php', [
-        'errors' => $response['errors']
+        'errors' => $processedRequest->processedPayload['errors']
     ]);
     return;
 }
 
-$email = $response['data']['email'];
-$password = $response['data']['password'];
+$email = $processedRequest->processedPayload['data']['email'];
+$password = $processedRequest->processedPayload['data']['password'];
 
 $usersRepository = new UsersRepository();
 

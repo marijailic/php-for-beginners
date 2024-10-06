@@ -3,17 +3,17 @@
 use Http\Requests\notes\GetNoteRequest;
 use Http\Repositories\NotesRepository;
 
-$response = (new GetNoteRequest())->process();
+$processedRequest = new GetNoteRequest();
 
-if (!empty($response['errors'])) {
-    if(isset($response['errors']['id'])) {
-        $status = $response['errors']['id']['status'];
+if (!empty($processedRequest->processedPayload['errors'])) {
+    if(isset($processedRequest->processedPayload['errors']['id'])) {
+        $status = $processedRequest->processedPayload['errors']['id']['status'];
         view("{$status}.php");
         return;
     }
 }
 
-$note = (new NotesRepository())->getById($response['data']['id'],);
+$note = (new NotesRepository())->getById($processedRequest->processedPayload['data']['id'],);
 
 view("notes/show.view.php", [
     'heading' => 'Note',

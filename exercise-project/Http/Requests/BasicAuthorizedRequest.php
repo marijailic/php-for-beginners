@@ -5,18 +5,15 @@ namespace Http\Requests;
 use Core\Session;
 use Core\Response;
 
-class BasicAuthorizedRequest extends BasicRequest
+abstract class BasicAuthorizedRequest extends BasicRequest
 {
-    protected $currentUserId;
+    protected ?int $userIdToAuthorize;
 
-    public function __construct()
-    {
-        $this->currentUserId = Session::getCurrentUserId();
-    }
+    abstract protected function getUserIdToAuthorize();
 
-    public function authorize($userId)
+    protected function authorizeUser(): void
     {
-        if ($userId != $this->currentUserId) {
+        if ($this->userIdToAuthorize != Session::getCurrentUserId()) {
             $status = Response::FORBIDDEN;
             http_response_code($status);
             require base_path("views/{$status}.php");

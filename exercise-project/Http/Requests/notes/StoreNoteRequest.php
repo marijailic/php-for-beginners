@@ -7,41 +7,18 @@ use Core\Session;
 
 class StoreNoteRequest extends BasicRequest
 {
-    protected string $body;
-    protected int $userId;
-
-    public function process()
+    public function __construct()
     {
-
-        if (!$this->validate()) {
-            return [
-                'data' => [
-                    'body' => $_POST['body'],
-                    'userId' => Session::getCurrentUserId(),
-                ],
-                'errors' => $this->errors
-            ];
-        }
-
-        $this->body = $_POST['body'];
-        $this->userId = Session::getCurrentUserId();
-
-        return [
-            'data' => [
-                'body' => $this->body,
-                'userId' => $this->userId,
-            ],
-            'errors' => []
-        ];
+        $this->bindDataToValidate();
+        $this->validateData();
+        $this->constructPayload();
     }
 
-    protected function validate()
+    protected function bindDataToValidate(): void
     {
-        $this->validateData(
-            ['body' => $_POST['body'], 'userId' => Session::getCurrentUserId()],
-            ['body' => ['required', 'string' => [1, 1000]], 'userId' => ['required', 'number']]
-        );
-
-        return !$this->failed();
+        $this->data = [
+            'body' => $_POST['body'],
+            'userId' => Session::getCurrentUserId(),
+        ];
     }
 }

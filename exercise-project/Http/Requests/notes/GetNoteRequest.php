@@ -7,43 +7,22 @@ use Http\Repositories\NotesRepository;
 
 class GetNoteRequest extends BasicAuthorizedRequest
 {
-    protected int $id;
-
     public function __construct()
     {
-        parent::__construct();
+        $this->bindDataToValidate();
+        $this->validateData();
+        $this->getUserIdToAuthorize();
+        $this->authorizeUser();
+        $this->constructPayload();
     }
 
-    public function process()
+    protected function bindDataToValidate(): void
     {
-
-        if (!$this->validate()) {
-            return [
-                'data' => [],
-                'errors' => $this->errors
-            ];
-        }
-
-        $this->id = (int) $_GET['id'];
-
-        $noteUserId = (new NotesRepository())->getById($this->id)['user_id'];
-        $this->authorize($noteUserId);
-
-        return [
-            'data' => [
-                'id' => $this->id
-            ],
-            'errors' => []
-        ];
+        $this->data = ['id' => $_GET['id']];
     }
 
-    protected function validate()
+    protected function getUserIdToAuthorize(): void
     {
-        $this->validateData(
-            ['id' => $_GET['id']],
-            ['id' => ['required', 'number']]
-        );
-
-        return !$this->failed();
+        $this->userIdToAuthorize = (new NotesRepository())->getById($this->data['id'])['user_id'];
     }
 }

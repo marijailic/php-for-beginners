@@ -6,37 +6,15 @@ use Http\Requests\BasicRequest;
 
 class StoreUserRequest extends BasicRequest
 {
-    protected string $email;
-    protected string $password;
-
-    public function process()
+    public function __construct()
     {
-        if (!$this->validate()) {
-            return [
-                'data' => [],
-                'errors' => $this->errors
-            ];
-        }
-
-        $this->email = $_POST['email'];
-        $this->password = $_POST['password'];
-
-        return [
-            'data' => [
-                'email' => $this->email,
-                'password' => $this->password,
-            ],
-            'errors' => []
-        ];
+        $this->bindDataToValidate();
+        $this->validateData();
+        $this->constructPayload();
     }
 
-    protected function validate()
+    protected function bindDataToValidate(): void
     {
-        $this->validateData(
-            ['email' => $_POST['email'], 'password' => $_POST['password']],
-            ['email' => ['required', 'email'], 'password' => ['required', 'string' => [7, 255]]]
-        );
-
-        return !$this->failed();
+        $this->data = ['email' => $_POST['email'], 'password' => $_POST['password']];
     }
 }

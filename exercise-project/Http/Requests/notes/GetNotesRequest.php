@@ -7,34 +7,16 @@ use Core\Session;
 
 class GetNotesRequest extends BasicRequest
 {
-    protected int $userId;
-
-    public function process()
+    public function __construct()
     {
-        if (!$this->validate()) {
-            return [
-                'data' => [],
-                'errors' => $this->errors
-            ];
-        }
+        $this->bindDataToValidate();
+        $this->validateData();
+        $this->constructPayload();
 
-        $this->userId = Session::getCurrentUserId();
-
-        return [
-            'data' => [
-                'userId' => $this->userId,
-            ],
-            'errors' => []
-        ];
     }
 
-    protected function validate()
+    protected function bindDataToValidate(): void
     {
-        $this->validateData(
-            ['userId' => Session::getCurrentUserId()],
-            ['userId' => ['required', 'number']]
-        );
-
-        return !$this->failed();
+        $this->data = ['userId' => Session::getCurrentUserId()];
     }
 }

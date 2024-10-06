@@ -3,26 +3,26 @@
 use Http\Requests\notes\UpdateNoteRequest;
 use Http\Repositories\NotesRepository;
 
-$response = (new UpdateNoteRequest())->process();
+$processedRequest = new UpdateNoteRequest();
 
-if (!empty($response['errors'])) {
-    if(isset($response['errors']['id'])) {
-        $status = $response['errors']['id']['status'];
+if (!empty($processedRequest->processedPayload['errors'])) {
+    if(isset($processedRequest->processedPayload['errors']['id'])) {
+        $status = $processedRequest->processedPayload['errors']['id']['status'];
         view("{$status}.php");
         return;
     }
 
-    if(isset($response['errors']['body'])) {
+    if(isset($processedRequest->processedPayload['errors']['body'])) {
         view('notes/edit.view.php',[
             'heading' => 'Create Note',
-            'errors' => $response['errors']['body'],
-            'note' => $response['data']
+            'errors' => $processedRequest->processedPayload['errors']['body'],
+            'note' => $processedRequest->processedPayload['data']
         ]);
         return;
     }
 }
 
-(new NotesRepository())->updateById($response['data']['id'], $response['data']['body']);
+(new NotesRepository())->updateById($processedRequest->processedPayload['data']['id'], $processedRequest->processedPayload['data']['body']);
 
 header('Location: /notes');
 die();

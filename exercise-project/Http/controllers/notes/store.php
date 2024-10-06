@@ -3,27 +3,27 @@
 use Http\Requests\notes\StoreNoteRequest;
 use Http\Repositories\NotesRepository;
 
-$response = (new StoreNoteRequest())->process();
+$processedRequest = new StoreNoteRequest();
 
-if(!empty($response['errors'])){
-    if(isset($response['errors']['body'])) {
+if(!empty($processedRequest->processedPayload['errors'])){
+    if(isset($processedRequest->processedPayload['errors']['body'])) {
         view("notes/create.view.php", [
             'heading' => 'Create Note',
-            'errors' => $response['errors']['body']
+            'errors' => $processedRequest->processedPayload['errors']['body']
         ]);
         return;
     }
 
-    if(isset($response['errors']['userId'])) {
-        $status = $response['errors']['userId']['status'];
+    if(isset($processedRequest->processedPayload['errors']['userId'])) {
+        $status = $processedRequest->processedPayload['errors']['userId']['status'];
         view("{$status}.php");
         return;
     }
 }
 
 (new NotesRepository())->create([
-    'body' => $response['data']['body'],
-    'user_id' => $response['data']['userId'],
+    'body' => $processedRequest->processedPayload['data']['body'],
+    'user_id' => $processedRequest->processedPayload['data']['userId'],
 ]);
 
 header('Location: /notes');
