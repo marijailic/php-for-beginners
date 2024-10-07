@@ -1,5 +1,4 @@
 <?php
-// TODO - validateData()
 
 namespace Http\Requests;
 
@@ -24,9 +23,8 @@ abstract class BasicRequest
 
     protected function validateData(): void
     {
-//        $validationOutcome = new RequestValidator($this->data, $this->rules);
-//        $this->errors = $validationOutcome->errors;
-        $this->errors = [];
+        $validationOutcome = new RequestValidator($this->data, $this->rules);
+        $this->errors = $validationOutcome->errors;
     }
 
     protected function constructPayload(): void

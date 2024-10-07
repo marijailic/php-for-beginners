@@ -7,11 +7,6 @@ use Http\Repositories\NotesRepository;
 
 class DestroyNoteRequest extends BasicAuthorizedRequest
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function bindDataToValidate(): void
     {
         $this->data = [
@@ -22,7 +17,7 @@ class DestroyNoteRequest extends BasicAuthorizedRequest
     protected function bindRulesForValidation(): void
     {
         $this->rules = [
-            'id' => ['required', 'number'],
+            'id' => ['required' => [], 'number' => []],
         ];
     }
 

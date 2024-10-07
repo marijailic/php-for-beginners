@@ -7,11 +7,6 @@ use Core\Session;
 
 class GetNotesRequest extends BasicRequest
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function bindDataToValidate(): void
     {
         $this->data = [
@@ -22,7 +17,7 @@ class GetNotesRequest extends BasicRequest
     protected function bindRulesForValidation(): void
     {
         $this->rules = [
-            'userId' => ['required', 'number'],
+            'userId' => ['required' => [], 'number' => []],
         ];
     }
 }

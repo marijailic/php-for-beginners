@@ -1,78 +1,66 @@
 <?php
-// TODO
 
 namespace Http\Requests;
 
 use Core\Validator;
+use Core\Response;
 
 class RequestValidator extends Validator
 {
     private array $data;
     private array $rules;
-    public array $errors;
+    public array $errors = [];
 
-    public function __construct($requestData)
+    public function __construct($requestData, $requestRules)
     {
         $this->data = $requestData;
-        $this->getRulesByData();
+        $this->rules = $requestRules;
         $this->validateDataByRules();
-    }
-
-    private function getRulesByData(): void
-    {
-        $rulesByRequest = RequestValidationRules::rules;
-        $dataKeys = array_keys($this->data);
-
-        foreach ($rulesByRequest as $requestType => $rules) {
-            $ruleKeys = array_keys($rules);
-            if ($dataKeys == $ruleKeys) {
-                $this->rules = $rules;
-                break;
-            }
-        }
     }
 
     private function validateDataByRules(): void
     {
-        foreach ($this->rules as $field => $fieldRules) {
-            $value = $this->data[$field] ?? null;
+        foreach ($this->rules as $fieldName => $fieldRules) {
+            $value = $this->data[$fieldName];
 
-            foreach ($fieldRules as $rule => $params) {
-                if ($this->isInvalidRule($rule, $value, $params)) {
-                    $this->addError($field, $this->generateErrorMessage($rule, $field, $params), Response::BAD_REQUEST);
+            foreach ($fieldRules as $ruleName => $ruleParams) {
+
+                if (!$this->isValid($ruleName, $value, $ruleParams)) {
+                    $this->addError($fieldName, $this->generateErrorMessage($ruleName, $fieldName, $ruleParams));
+                    var_dump($this->errors);
                     break;
                 }
+
             }
         }
     }
 
-    private function isInvalidRule(string $rule, $value, $params): bool
+    private function isValid($rule, $value, $params): bool
     {
-        if (method_exists(Validator::class, $rule)) {
-            return !call_user_func_array([Validator::class, $rule], array_merge([$value], (array) $params));
+        if (!method_exists(Validator::class, $rule)) {
+            return false;
         }
-        return false;
+            $args = array_merge([$value], $params);
+            return call_user_func_array([Validator::class, $rule], $args);
     }
 
-    private function addError(string $field, string $message, int $status): void
+    private function addError($field, $message): void
     {
         $this->errors[$field] = [
             'message' => $message,
-            'status' => $status
+            'status' => Response::BAD_REQUEST,
         ];
     }
 
-    private function generateErrorMessage(string $rule, string $field, array $params = []): string
+    private function generateErrorMessage($rule, $field, $params): string
     {
-        $errorMessages = RequestValidationErrors::errors;
+        $errorMessages = RequestValidationErrors::ERRORS;
         $message = $errorMessages[$rule] ?? $errorMessages['invalid'];
 
-        $min = $params[0] ?? 1;
-        $max = $params[1] ?? INF;
         $replacements = [
             ':field' => ucfirst($field),
-            ':min' => $min,
-            ':max' => $max,
+            ':min' => $params[0] ?? null,
+            ':max' => $params[1] ?? null,
         ];
 
         return strtr($message, $replacements);

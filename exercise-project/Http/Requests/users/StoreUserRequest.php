@@ -6,11 +6,6 @@ use Http\Requests\BasicRequest;
 
 class StoreUserRequest extends BasicRequest
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function bindDataToValidate(): void
     {
         $this->data = [
@@ -22,8 +17,8 @@ class StoreUserRequest extends BasicRequest
     protected function bindRulesForValidation(): void
     {
         $this->rules = [
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string' => [7, 255]],
+            'email' => ['required' => [], 'email' => []],
+            'password' => ['required' => [], 'string' => [7, 255]],
         ];
     }
 }

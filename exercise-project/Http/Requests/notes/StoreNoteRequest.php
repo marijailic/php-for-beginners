@@ -7,11 +7,6 @@ use Core\Session;
 
 class StoreNoteRequest extends BasicRequest
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function bindDataToValidate(): void
     {
         $this->data = [
@@ -23,8 +18,8 @@ class StoreNoteRequest extends BasicRequest
     protected function bindRulesForValidation(): void
     {
         $this->rules = [
-            'body' => ['required', 'string' => [1, 1000]],
-            'userId' => ['required', 'number'],
+            'body' => ['required' => [], 'string' => [1, 1000]],
+            'userId' => ['required' => [], 'number' => []],
         ];
     }
 }

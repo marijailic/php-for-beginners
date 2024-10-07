@@ -7,11 +7,6 @@ use Http\Repositories\NotesRepository;
 
 class UpdateNoteRequest extends BasicAuthorizedRequest
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function bindDataToValidate(): void
     {
         $this->data = [
@@ -23,8 +18,8 @@ class UpdateNoteRequest extends BasicAuthorizedRequest
     protected function bindRulesForValidation(): void
     {
         $this->rules = [
-            'id' => ['required', 'number'],
-            'body' => ['required', 'string' => [1, 1000]],
+            'id' => ['required' => [], 'number' => []],
+            'body' => ['required' => [], 'string' => [1, 1000]],
         ];
     }
 
