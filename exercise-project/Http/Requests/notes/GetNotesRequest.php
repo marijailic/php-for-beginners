@@ -9,14 +9,20 @@ class GetNotesRequest extends BasicRequest
 {
     public function __construct()
     {
-        $this->bindDataToValidate();
-        $this->validateData();
-        $this->constructPayload();
-
+        parent::__construct();
     }
 
     protected function bindDataToValidate(): void
     {
-        $this->data = ['userId' => Session::getCurrentUserId()];
+        $this->data = [
+            'userId' => Session::getCurrentUserId(),
+        ];
+    }
+
+    protected function bindRulesForValidation(): void
+    {
+        $this->rules = [
+            'userId' => ['required', 'number'],
+        ];
     }
 }

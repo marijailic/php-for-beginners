@@ -9,7 +9,14 @@ abstract class BasicAuthorizedRequest extends BasicRequest
 {
     protected ?int $userIdToAuthorize;
 
-    abstract protected function getUserIdToAuthorize();
+    public function __construct()
+    {
+        parent::__construct();
+        $this->bindUserIdToAuthorize();
+        $this->authorizeUser();
+    }
+
+    abstract protected function bindUserIdToAuthorize();
 
     protected function authorizeUser(): void
     {

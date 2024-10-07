@@ -9,19 +9,24 @@ class DestroyNoteRequest extends BasicAuthorizedRequest
 {
     public function __construct()
     {
-        $this->bindDataToValidate();
-        $this->validateData();
-        $this->getUserIdToAuthorize();
-        $this->authorizeUser();
-        $this->constructPayload();
+        parent::__construct();
     }
 
     protected function bindDataToValidate(): void
     {
-        $this->data = ['id' => $_GET['id']];
+        $this->data = [
+            'id' => $_GET['id'],
+        ];
     }
 
-    protected function getUserIdToAuthorize(): void
+    protected function bindRulesForValidation(): void
+    {
+        $this->rules = [
+            'id' => ['required', 'number'],
+        ];
+    }
+
+    protected function bindUserIdToAuthorize(): void
     {
         $this->userIdToAuthorize = (new NotesRepository())->getById($this->data['id'])['user_id'];
     }

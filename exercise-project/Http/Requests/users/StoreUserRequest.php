@@ -8,13 +8,22 @@ class StoreUserRequest extends BasicRequest
 {
     public function __construct()
     {
-        $this->bindDataToValidate();
-        $this->validateData();
-        $this->constructPayload();
+        parent::__construct();
     }
 
     protected function bindDataToValidate(): void
     {
-        $this->data = ['email' => $_POST['email'], 'password' => $_POST['password']];
+        $this->data = [
+            'email' => $_POST['email'],
+            'password' => $_POST['password'],
+        ];
+    }
+
+    protected function bindRulesForValidation(): void
+    {
+        $this->rules = [
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string' => [7, 255]],
+        ];
     }
 }

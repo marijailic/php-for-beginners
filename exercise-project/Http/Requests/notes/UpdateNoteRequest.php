@@ -9,11 +9,7 @@ class UpdateNoteRequest extends BasicAuthorizedRequest
 {
     public function __construct()
     {
-        $this->bindDataToValidate();
-        $this->validateData();
-        $this->getUserIdToAuthorize();
-        $this->authorizeUser();
-        $this->constructPayload();
+        parent::__construct();
     }
 
     protected function bindDataToValidate(): void
@@ -24,7 +20,15 @@ class UpdateNoteRequest extends BasicAuthorizedRequest
         ];
     }
 
-    protected function getUserIdToAuthorize(): void
+    protected function bindRulesForValidation(): void
+    {
+        $this->rules = [
+            'id' => ['required', 'number'],
+            'body' => ['required', 'string' => [1, 1000]],
+        ];
+    }
+
+    protected function bindUserIdToAuthorize(): void
     {
         $this->userIdToAuthorize = (new NotesRepository())->getById($this->data['id'])['user_id'];
     }

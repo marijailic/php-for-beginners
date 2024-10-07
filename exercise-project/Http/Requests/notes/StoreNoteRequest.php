@@ -9,9 +9,7 @@ class StoreNoteRequest extends BasicRequest
 {
     public function __construct()
     {
-        $this->bindDataToValidate();
-        $this->validateData();
-        $this->constructPayload();
+        parent::__construct();
     }
 
     protected function bindDataToValidate(): void
@@ -19,6 +17,14 @@ class StoreNoteRequest extends BasicRequest
         $this->data = [
             'body' => $_POST['body'],
             'userId' => Session::getCurrentUserId(),
+        ];
+    }
+
+    protected function bindRulesForValidation(): void
+    {
+        $this->rules = [
+            'body' => ['required', 'string' => [1, 1000]],
+            'userId' => ['required', 'number'],
         ];
     }
 }
