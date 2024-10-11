@@ -9,6 +9,7 @@ if(!empty($processedRequest->processedPayload['errors'])){
     if(isset($processedRequest->processedPayload['errors']['body'])) {
         view("notes/create.view.php", [
             'heading' => 'Create Note',
+            'title' => 'Create Note',
             'errors' => $processedRequest->processedPayload['errors']['body']
         ]);
         return;
@@ -16,7 +17,9 @@ if(!empty($processedRequest->processedPayload['errors'])){
 
     if(isset($processedRequest->processedPayload['errors']['userId'])) {
         $status = $processedRequest->processedPayload['errors']['userId']['status'];
-        view("{$status}.php");
+        view("{$status}.php", [
+            'title' => $status
+        ]);
         return;
     }
 }

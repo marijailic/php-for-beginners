@@ -8,7 +8,9 @@ $processedRequest = new GetNoteRequest();
 if (!empty($processedRequest->processedPayload['errors'])) {
     if(isset($processedRequest->processedPayload['errors']['id'])) {
         $status = $processedRequest->processedPayload['errors']['id']['status'];
-        view("{$status}.php");
+        view("{$status}.php", [
+            'title' => $status
+        ]);
         return;
     }
 }
@@ -17,6 +19,7 @@ $note = (new NotesRepository())->getById($processedRequest->processedPayload['da
 
 view("notes/edit.view.php", [
     'heading' => 'Edit Note',
+    'title' => 'Edit Note',
     'errors' => [],
     'note' => $note
 ]);

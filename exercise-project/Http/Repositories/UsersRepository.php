@@ -8,9 +8,9 @@ class UsersRepository
 {
     protected $db;
 
-    public function __construct()
+    public function __construct($db = null)
     {
-        $this->db = App::resolve('Core\Database');
+        $this->db = $db ?? App::resolve('Core\Database');
     }
 
     public function getByEmail($email)

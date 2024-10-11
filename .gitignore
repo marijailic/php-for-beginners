@@ -9,3 +9,5 @@
 
 /.idea/
 /exercise-project/vendor/
+/exercise-project/.phpunit.result.cache
+

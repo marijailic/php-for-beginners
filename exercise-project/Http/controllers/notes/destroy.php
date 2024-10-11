@@ -7,7 +7,10 @@ $processedRequest = new DestroyNoteRequest();
 
 if (!empty($processedRequest->processedPayload['errors'])) {
     $status = $processedRequest->processedPayload['errors']['id']['status'];
-    view("{$status}.php");
+    view("{$status}.php", [
+        'status' => $status,
+        'title' => $status
+    ]);
     return;
 }
 

@@ -8,13 +8,16 @@ $processedRequest = new UpdateNoteRequest();
 if (!empty($processedRequest->processedPayload['errors'])) {
     if(isset($processedRequest->processedPayload['errors']['id'])) {
         $status = $processedRequest->processedPayload['errors']['id']['status'];
-        view("{$status}.php");
+        view("{$status}.php", [
+            'title' => $status
+        ]);
         return;
     }
 
     if(isset($processedRequest->processedPayload['errors']['body'])) {
         view('notes/edit.view.php',[
             'heading' => 'Create Note',
+            'title' => 'Create Note',
             'errors' => $processedRequest->processedPayload['errors']['body'],
             'note' => $processedRequest->processedPayload['data']
         ]);

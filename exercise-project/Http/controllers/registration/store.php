@@ -8,6 +8,7 @@ $processedRequest = new StoreUserRequest();
 
 if(!empty($processedRequest->processedPayload['errors'])){
     view('registration/create.view.php', [
+        'title' => "Register",
         'errors' => $processedRequest->processedPayload['errors']
     ]);
     return;

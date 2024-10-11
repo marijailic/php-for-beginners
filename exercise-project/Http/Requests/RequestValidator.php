@@ -27,7 +27,6 @@ class RequestValidator extends Validator
 
                 if (!$this->isValid($ruleName, $value, $ruleParams)) {
                     $this->addError($fieldName, $this->generateErrorMessage($ruleName, $fieldName, $ruleParams));
-                    var_dump($this->errors);
                     break;
                 }
 
