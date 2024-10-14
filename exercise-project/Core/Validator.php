@@ -17,9 +17,9 @@ class Validator
 
     public static function number($value, $min = null, $max = null): bool
     {
-        if (!is_numeric($value)) {
-            return false;
-        }
+//        if (!is_numeric($value)) {
+//            return false;
+//        }
 
         if ($min !== null && $value < $min) {
             return false;
