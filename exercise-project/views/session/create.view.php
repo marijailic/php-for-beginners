@@ -1,11 +1,10 @@
-
 <?php
-//echo "Hello ";
-//
-//echo "<script>document.write('Green')</script>";
-//
-//?>
-<!-- World<br>-->
+echo "Hello ";
+
+echo "<script>document.write('Green')</script>";
+
+?>
+ World<br>
 
 <!--TODO-->
 
