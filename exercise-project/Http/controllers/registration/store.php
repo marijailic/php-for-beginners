@@ -1,12 +1,17 @@
 <?php
 
 use Http\Requests\users\StoreUserRequest;
+use Core\Session;
 use Http\Repositories\UsersRepository;
 use Core\Authenticator;
 
 $processedRequest = new StoreUserRequest();
 
 if(!empty($processedRequest->processedPayload['errors'])){
+    Session::flash('old', [
+        'email' => $_POST['email']
+    ]);
+
     view('registration/create.view.php', [
         'title' => "Register",
         'errors' => $processedRequest->processedPayload['errors']

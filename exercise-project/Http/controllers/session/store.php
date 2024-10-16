@@ -15,7 +15,7 @@ $sessionCsrf = Session::get('csrf');
 
 if($csrf != $sessionCsrf) {
     $form->error(
-        'email', 'No matching account found for that email address and password.'
+        'csrf', 'Invalid or expired session token. Please try again.'
     )->throw();
 }
 
