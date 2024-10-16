@@ -8,8 +8,14 @@
 /dataSources.local.xml
 
 /.idea/
+/.DS_Store
+
 /exercise-project/vendor/
 /exercise-project/.phpunit.result.cache
-
+/exercise-project/.DS_Store
+/exercise-project/views/.DS_Store
+/exercise-project/tests/.DS_Store
+/exercise-project/Http/.DS_Store
+/exercise-project/Http/controllers/.DS_Store
 
 /cypress/node_modules/
