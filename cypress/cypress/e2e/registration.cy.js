@@ -15,8 +15,7 @@ describe('Registration', () => {
 
         cy.get('button[type="submit"]').click()
 
-        cy.url().should('include', '/')
-        cy.contains(fakeUser.email).should('be.visible')
+        cy.get("div[data-test-id='homepage']").contains(fakeUser.email).should('be.visible')
     })
 
 })

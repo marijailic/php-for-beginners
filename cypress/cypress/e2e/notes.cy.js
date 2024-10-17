@@ -20,8 +20,7 @@ describe('Notes', () => {
 
         cy.get('button[type="submit"]').click()
 
-        cy.url().should('include', '/')
-        cy.contains(existingUser.email).should('be.visible')
+        cy.get("div[data-test-id='homepage']").contains(existingUser.email).should('be.visible')
     })
 
     it('should create and display a new note', () => {
@@ -65,4 +64,5 @@ describe('Notes', () => {
         cy.contains('Delete').click()
         cy.url().should('include', '/notes')
     })
+    
 })

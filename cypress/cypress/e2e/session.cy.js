@@ -15,8 +15,7 @@ describe('Session', () => {
 
         cy.get('button[type="submit"]').click()
 
-        cy.url().should('include', '/')
-        cy.contains(existingUser.email).should('be.visible')
+        cy.get("div[data-test-id='homepage']").contains(existingUser.email).should('be.visible')
     })
 
     it('should allow a user to log out successfully after logging in', () => {
@@ -29,8 +28,7 @@ describe('Session', () => {
 
         cy.get('button[type="submit"]').click()
 
-        cy.url().should('include', '/')
-        cy.contains(existingUser.email).should('be.visible')
+        cy.get("div[data-test-id='homepage']").contains(existingUser.email).should('be.visible')
 
         cy.contains('Log Out').click()
         cy.contains('Guest').should('be.visible')
