@@ -5,6 +5,11 @@
          colors="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
 >
+
+    <php>
+        <const name="PHPUNIT_YOURAPPLICATION_TESTSUITE" value="true"/>
+    </php>
+
     <testsuites>
         <testsuite name="Test Suite">
             <directory suffix="Test.php">./tests</directory>

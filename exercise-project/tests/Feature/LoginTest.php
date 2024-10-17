@@ -25,11 +25,13 @@ class LoginTest extends TestCase
         // create new user in db
         $userRepository = new UsersRepository($db);
 
-        $userRepository->create(['email' => 'test@test.com', 'password' => 'password']);
+        $userPassword = password_hash('password', PASSWORD_BCRYPT);
+        $userRepository->create(['email' => 'test@test.com', 'password' => $userPassword]);
 
-        $user = $userRepository->getByEmail('test@test.com');
-
-        $output = $this->post('/session', ['email' => 'test@test.com', 'password' => 'password']);
+        $output = $this->post('/session', [
+            'email' => 'test@test.com',
+            'password' => 'password',
+        ]);
 
         self::assertTrue($output->isRedirect());
     }

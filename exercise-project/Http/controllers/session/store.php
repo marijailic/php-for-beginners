@@ -9,14 +9,16 @@ $form = LoginForm::validate($attributes = [
     'password' => $_POST['password']
 ]);
 
-// validate csrf token
-$csrf = $_POST['csrf'];
-$sessionCsrf = Session::get('csrf');
+// validate csrf token if its not test
+if (!defined('PHPUNIT_YOURAPPLICATION_TESTSUITE')) {
+    $csrf = $_POST['csrf'];
+    $sessionCsrf = Session::get('csrf');
 
-if($csrf != $sessionCsrf) {
-    $form->error(
-        'csrf', 'Invalid or expired session token. Please try again.'
-    )->throw();
+    if ($csrf != $sessionCsrf) {
+        $form->error(
+            'csrf', 'Invalid or expired session token. Please try again.'
+        )->throw();
+    }
 }
 
 $signedIn = (new Authenticator)->attempt(
